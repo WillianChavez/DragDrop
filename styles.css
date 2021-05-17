@@ -1,0 +1,91 @@
+:root{
+    --bgColor-1:#c0fefc;
+    --bgColor-2:#3edbf0;
+    --bgColor-3: #77acf1;
+    --bgColor-4:#04009a;
+    --bgColor-White:#fff;
+    --fontSize-title: 2em;
+    --fontSize-list: 1.3em;
+}
+* {
+    box-sizing: border-box;
+}
+body {
+    height: 100vh;
+    display: grid;
+    align-content: center;
+    background: linear-gradient( var(--bgColor-1),var(--bgColor-2) ,var(--bgColor-3));
+    background-repeat: no-repeat;
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+    
+}
+
+/*      LIST      */
+
+.box-list {
+    margin: 1em;
+    width: 50%;
+    color:var(--bgColor-White);
+    text-align: center;
+}
+
+.box-list__title {
+    background-color:var(--bgColor-3);
+    margin: 0;
+    font-size: var(--fontSize-title);
+    padding:.5em 1em;
+}
+
+.list {
+    background-color: var(--bgColor-4);
+    margin: 0;
+    min-height: 200px;
+    padding:1em;
+    border-radius: 0px 0px 50px 10px;
+    box-shadow: 4px 7px 20px var(--bgColor-1);
+    border:5px solid transparent;
+    
+}
+
+.list__item{
+    list-style: none;
+    font-size: var(--fontSize-list);
+    border: 3px solid var(--bgColor-1);
+    border-radius: 10px;
+    margin: 1em 0;
+    padding: .5em;
+    cursor: pointer;
+}
+
+.animation--drag{
+    animation: listDrag infinite linear 3s;
+}
+@keyframes listDrag{
+  
+    0%{
+        opacity: 0.5;
+        border: green 5px solid;
+    }
+    25%{
+        opacity: 0.5;
+        border: var(--bgColor-2) 5px solid;
+    }
+    50%{
+        opacity: 0.5;
+        border: var(--bgColor-3) 5px solid;
+    }
+    75%{
+        opacity: 0.5;
+        border: var(--bgColor-4) 5px solid;
+    }
+    100%{
+        opacity: 0.5;
+        border: green 5px solid;
+    }
+    
+    
+}
