@@ -26,6 +26,7 @@ const addAnimationDrag = (list) => list.classList.add('animation--drag')
 const addAnimationDragItem = (element) => {
     if (element) element.classList.add('list__item--dragstart')
 }
+
 const removeAnimationDrag = (list) => list.classList.remove('animation--drag')
 
 const removeAnimationDragItem = (element) => {
@@ -66,14 +67,6 @@ const removeOverElement = (element) => {
     if (element.classList.contains('list__item')) {
         element.classList.remove('list__item--over')
     }
-}
-
-const draggingEnter = (e) => {
-    // const dragelement = document.querySelector('.list__item[data-drag]')
-    // let overElement = e.target
-    // if (overElement.classList.contains('list__item')) {
-    //     overElement.insertAdjacentElement('beforebegin', dragelement)
-    // }
 }
 
 const draggingLeave = (e) => {
@@ -117,9 +110,6 @@ listLeft.addEventListener('dragover', (e) => {
     overElement(e, listLeft)
 })
 
-listLeft.addEventListener('dragenter', (e) => {
-    draggingEnter(e)
-})
 listLeft.addEventListener('dragleave', (e) => draggingLeave(e))
 
 listLeft.addEventListener('drop', (e) => {
@@ -145,10 +135,6 @@ listRight.addEventListener('dragend', (e) => {
 listRight.addEventListener('dragover', (e) => {
     e.preventDefault()
     overElement(e, listRight)
-})
-
-listRight.addEventListener('dragenter', (e) => {
-    draggingEnter(e)
 })
 
 listRight.addEventListener('dragleave', (e) => {
