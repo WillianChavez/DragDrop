@@ -16,7 +16,10 @@ window.addEventListener('load', () => {
 })
 
 /* Functions drag and drop use for list*/
-const dragStart = (e) => e.dataTransfer.setData('text/plain', e.target.id)
+const dragStart = (e) => {
+    e.dataTransfer.setData('text/plain', e.target.id)
+    e.target.dataset.drag = 'dragging'
+}
 
 const addAnimationDrag = (list) => list.classList.add('animation--drag')
 
@@ -28,9 +31,34 @@ const removeAnimationDrag = (list) => list.classList.remove('animation--drag')
 const removeAnimationDragItem = (element) => {
     if (element) element.classList.remove('list__item--dragstart')
 }
-const overElement = (element) => {
-    if (element.classList.contains('list__item')) {
-        element.classList.add('list__item--over')
+const overElement = (e, list) => {
+    const element = e.target
+    const dragElement = document.querySelector('.list__item[data-drag]')
+
+    if (element) {
+        if (element.classList.contains('list__item') && element.id != dragElement.id) {
+            element.classList.add('list__item--over')
+
+            const distance = e.clientY
+
+            const top = e.target.getBoundingClientRect().top
+
+            const positionCursor = distance - top
+            const heightElement = e.target.offsetHeight
+
+            const halfHeight = heightElement / 2
+
+            const topHalfOfElement = positionCursor < halfHeight
+            const bottomHalfOfElement = positionCursor > halfHeight
+
+            if (topHalfOfElement) {
+                element.insertAdjacentElement('beforebegin', dragElement)
+            } else if (bottomHalfOfElement) {
+                element.insertAdjacentElement('afterend', dragElement)
+            }
+        } else if (!list.hasChildNodes()) {
+            list.append(dragElement)
+        }
     }
 }
 
@@ -40,12 +68,25 @@ const removeOverElement = (element) => {
     }
 }
 
+const draggingEnter = (e) => {
+    // const dragelement = document.querySelector('.list__item[data-drag]')
+    // let overElement = e.target
+    // if (overElement.classList.contains('list__item')) {
+    //     overElement.insertAdjacentElement('beforebegin', dragelement)
+    // }
+}
+
+const draggingLeave = (e) => {
+    removeOverElement(e.target)
+}
+
 const transferElement = (e, finishList) => {
     const element = document.getElementById(e.dataTransfer.getData('text/plain'))
     const dropElement = e.target
 
     removeAnimationDrag(finishList)
     removeAnimationDragItem(element)
+    element.removeAttribute('data-drag')
 
     if (dropElement.id != element.id && dropElement.classList.contains('list__item')) {
         dropElement.insertAdjacentElement('afterend', element)
@@ -73,10 +114,13 @@ listLeft.addEventListener('dragend', (e) => {
 
 listLeft.addEventListener('dragover', (e) => {
     e.preventDefault()
-    overElement(e.target)
+    overElement(e, listLeft)
 })
 
-listLeft.addEventListener('dragleave', (e) => removeOverElement(e.target))
+listLeft.addEventListener('dragenter', (e) => {
+    draggingEnter(e)
+})
+listLeft.addEventListener('dragleave', (e) => draggingLeave(e))
 
 listLeft.addEventListener('drop', (e) => {
     e.preventDefault()
@@ -100,10 +144,16 @@ listRight.addEventListener('dragend', (e) => {
 
 listRight.addEventListener('dragover', (e) => {
     e.preventDefault()
-    overElement(e.target)
+    overElement(e, listRight)
 })
 
-listRight.addEventListener('dragleave', (e) => removeOverElement(e.target))
+listRight.addEventListener('dragenter', (e) => {
+    draggingEnter(e)
+})
+
+listRight.addEventListener('dragleave', (e) => {
+    draggingLeave(e)
+})
 
 listRight.addEventListener('drop', (e) => {
     e.preventDefault()
